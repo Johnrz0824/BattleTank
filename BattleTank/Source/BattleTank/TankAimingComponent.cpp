@@ -16,7 +16,7 @@ UTankAimingComponent::UTankAimingComponent()
 
 void UTankAimingComponent::AimAt(FVector WorldSpaceAim, float launchSpeed)
 {
-	if (!Barrel) { return; }
+	if (!ensure(Barrel)) { return; }
 	FVector OutLaunchVelocity;
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
 	bool success = UGameplayStatics::SuggestProjectileVelocity(
@@ -58,7 +58,7 @@ void UTankAimingComponent::MoveBarrelTowards(FVector Direction)
 
 void UTankAimingComponent::Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
 {
-	if (!BarrelToSet || !TurretToSet) { return; }
+	if (!ensure(BarrelToSet && TurretToSet)) { return; }
 	Barrel = BarrelToSet;
 	Turret = TurretToSet;
 }

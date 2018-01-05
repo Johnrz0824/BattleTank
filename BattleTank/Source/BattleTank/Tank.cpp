@@ -26,7 +26,7 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ATank::AimAt(FVector HitLocation)
 {
-	if(TankAimingComponent)
+	if(ensure(TankAimingComponent))
 		TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
 }
 
@@ -34,7 +34,7 @@ void ATank::Fire()
 {
 	auto requestTime = GetWorld()->GetTimeSeconds();
 	bool isReloaded = (requestTime - LastFireTime) > ReloadTime;
-	if (!isReloaded || !Barrel) { return; }
+	if (!ensure(isReloaded && Barrel)) { return; }
 	auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint
 		,Barrel->GetSocketLocation(FName("Projectile"))
 		,Barrel->GetSocketRotation(FName("Projectile"))
