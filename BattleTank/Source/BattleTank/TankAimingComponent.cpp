@@ -6,6 +6,8 @@
 #include "GameFramework/Pawn.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
+#include "Projectile.h"
+#include "Engine/World.h"
 
 
 // Sets default values for this component's properties
@@ -61,4 +63,21 @@ void UTankAimingComponent::Initialise(UTankBarrel* BarrelToSet, UTankTurret* Tur
 	if (!ensure(BarrelToSet && TurretToSet)) { return; }
 	Barrel = BarrelToSet;
 	Turret = TurretToSet;
+}
+
+
+
+void UTankAimingComponent::Fire()
+{
+	auto requestTime = GetWorld()->GetTimeSeconds();
+	bool isReloaded = (requestTime - LastFireTime) > ReloadTime;
+	if (!ensure(isReloaded && Barrel)) { return; }
+	auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint
+		, Barrel->GetSocketLocation(FName("Projectile"))
+		, Barrel->GetSocketRotation(FName("Projectile"))
+		, FActorSpawnParameters()
+		);
+	Projectile->LaunchProjectile(4000);
+	LastFireTime = requestTime;
+
 }
