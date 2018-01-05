@@ -4,8 +4,6 @@
 #include "TankBarrel.h"
 #include "Projectile.h"
 #include "Engine/World.h"
-#include "TankAimingComponent.h"
-#include "TankMovementComponent.h"
 
 
 ATank::ATank()
@@ -24,12 +22,6 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
-void ATank::AimAt(FVector HitLocation)
-{
-	if(ensure(TankAimingComponent))
-		TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
-}
-
 void ATank::Fire()
 {
 	auto requestTime = GetWorld()->GetTimeSeconds();
@@ -40,7 +32,7 @@ void ATank::Fire()
 		,Barrel->GetSocketRotation(FName("Projectile"))
 		,FActorSpawnParameters()
 		);
-	Projectile->LaunchProjectile(LaunchSpeed);
+	Projectile->LaunchProjectile(4000);
 	LastFireTime = requestTime;
 
 }

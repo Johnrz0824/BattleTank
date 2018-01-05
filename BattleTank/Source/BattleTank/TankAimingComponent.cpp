@@ -14,7 +14,7 @@ UTankAimingComponent::UTankAimingComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void UTankAimingComponent::AimAt(FVector WorldSpaceAim, float launchSpeed)
+void UTankAimingComponent::AimAt(FVector WorldSpaceAim)
 {
 	if (!ensure(Barrel)) { return; }
 	FVector OutLaunchVelocity;
@@ -24,7 +24,7 @@ void UTankAimingComponent::AimAt(FVector WorldSpaceAim, float launchSpeed)
 		OutLaunchVelocity,
 		StartLocation,
 		WorldSpaceAim,
-		launchSpeed,
+		LaunchSpeed,
 		false,
 		0,
 		0,

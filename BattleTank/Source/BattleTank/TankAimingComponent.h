@@ -27,7 +27,7 @@ public:
 	UTankAimingComponent();
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
 	void SetTurretReference(UTankTurret* TurretToSet);
-	void AimAt(FVector WorldSpaceAim, float launchSpeed);
+	void AimAt(FVector HitLocation);
 
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
@@ -35,6 +35,9 @@ private:
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
 	void MoveBarrelTowards(FVector Direction);
+
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	float LaunchSpeed = 100000;
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = Setup)
 		EFiringStatus FiringStatus = EFiringStatus::Reloading;
