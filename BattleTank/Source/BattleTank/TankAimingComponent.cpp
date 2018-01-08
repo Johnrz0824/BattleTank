@@ -13,6 +13,13 @@
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
 {
+	PrimaryComponentTick.bCanEverTick = false;
+	PrimaryComponentTick.bStartWithTickEnabled = true;
+	PrimaryComponentTick.TickGroup = TG_PrePhysics;
+
+	bAutoRegister = true;
+	bWantsInitializeComponent = true;
+	bAutoActivate = true;
 }
 
 void UTankAimingComponent::BeginPlay()
@@ -22,14 +29,28 @@ void UTankAimingComponent::BeginPlay()
 	LastFireTime = FPlatformTime::Seconds();
 }
 
-void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
+void UTankAimingComponent::UpdateState()
 {
 	if (FPlatformTime::Seconds() - LastFireTime < ReloadTime)
 	{
 		FiringState = EFiringStatus::Reloading;
 	}
+	else if (IsBarrelMoving())
+	{
+		FiringState = EFiringStatus::Aiming;
+	}
+	else
+	{
+		FiringState = EFiringStatus::Locked;
+	}
 }
 
+bool UTankAimingComponent::IsBarrelMoving()
+{
+	if (!ensure(Barrel)) { return false; }
+	auto BarrelForward = Barrel->GetForwardVector();
+	return !BarrelForward.Equals(AimDirection,0.1);
+}
 
 void UTankAimingComponent::AimAt(FVector WorldSpaceAim)
 {
@@ -48,7 +69,7 @@ void UTankAimingComponent::AimAt(FVector WorldSpaceAim)
 		ESuggestProjVelocityTraceOption::DoNotTrace
 	);
 	if (!success) { return; }
-	auto AimDirection = OutLaunchVelocity.GetSafeNormal();
+	AimDirection = OutLaunchVelocity.GetSafeNormal();
 	MoveBarrelTowards(AimDirection);
 }
 
