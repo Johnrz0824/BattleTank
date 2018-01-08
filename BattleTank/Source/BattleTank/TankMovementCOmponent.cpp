@@ -34,3 +34,10 @@ void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool
 	IntendMoveForward(dot);
 	IntendTurnRight(cross.Z);
 }
+
+void UTankMovementComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
+{
+	if (!ensure(LeftTrack && RightTrack)) { return; }
+	LeftTrack->Slip(DeltaTime);
+	RightTrack->Slip(DeltaTime);
+}
