@@ -30,6 +30,7 @@ public:
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
 	void SetTurretReference(UTankTurret* TurretToSet);
 	void AimAt(FVector HitLocation);
+	void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)override;
 
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
@@ -49,9 +50,10 @@ private:
 
 protected:
 	float LastFireTime = 0;
+	void BeginPlay()override;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Setup")
-	EFiringStatus FiringStatus = EFiringStatus::Reloading;
+	EFiringStatus FiringState = EFiringStatus::Reloading;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	float ReloadTime = 3;
