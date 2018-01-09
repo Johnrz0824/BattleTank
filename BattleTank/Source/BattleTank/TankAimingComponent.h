@@ -31,6 +31,7 @@ public:
 	void SetTurretReference(UTankTurret* TurretToSet);
 	void AimAt(FVector HitLocation);
 	void UpdateState();
+	EFiringStatus GetFiringState() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
