@@ -16,7 +16,8 @@ enum class EFiringStatus : uint8
 {
 	Aiming,
 	Reloading,
-	Locked
+	Locked,
+	OutOfAmmo
 };
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -60,4 +61,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	float ReloadTime = 3;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Setup")
+	int Ammos = 0;
 };
