@@ -39,6 +39,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Firing")
 	void Fire();
+
+	UFUNCTION(BlueprintCallable, Category = "Firing")
+	int32 GetRemainAmmos();
 private:
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
@@ -62,6 +65,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	float ReloadTime = 3;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Setup")
-	int Ammos = 0;
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	int32 Ammos = 0;
 };

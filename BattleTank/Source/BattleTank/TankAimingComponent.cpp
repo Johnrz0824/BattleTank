@@ -27,7 +27,13 @@ void UTankAimingComponent::BeginPlay()
 	Super::BeginPlay();
 	PrimaryComponentTick.bCanEverTick = true;
 	LastFireTime = FPlatformTime::Seconds();
-	Ammos = 5;
+	Ammos = 50;
+}
+
+int32 UTankAimingComponent::GetRemainAmmos() 
+{
+	UE_LOG(LogTemp, Warning, TEXT("%d"), Ammos);
+	return Ammos;
 }
 
 void UTankAimingComponent::UpdateState()
