@@ -108,11 +108,8 @@ void UTankAimingComponent::Initialise(UTankBarrel* BarrelToSet, UTankTurret* Tur
 
 void UTankAimingComponent::Fire()
 {
-	UE_LOG(LogTemp, Warning, TEXT("0"));
 	if (FiringState == EFiringStatus::Reloading || FiringState == EFiringStatus::OutOfAmmo) { return; }
-	UE_LOG(LogTemp, Warning, TEXT("1"));
 	if (!ensure(Barrel && ProjectileBlueprint)) { return; }
-	UE_LOG(LogTemp, Warning, TEXT("2"));
 	auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint
 		, Barrel->GetSocketLocation(FName("Projectile"))
 		, Barrel->GetSocketRotation(FName("Projectile"))
