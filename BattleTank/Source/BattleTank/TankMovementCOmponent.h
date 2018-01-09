@@ -30,6 +30,4 @@ private:
 	UTankTrack* RightTrack = nullptr;
 	// called by pathfinding
 	void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed)override;
-	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)override;
-
 };

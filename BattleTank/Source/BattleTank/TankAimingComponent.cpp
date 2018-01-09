@@ -90,7 +90,10 @@ void UTankAimingComponent::MoveBarrelTowards(FVector Direction)
 	auto AimAsRotator = Direction.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotation;
 	Barrel->Elevate(DeltaRotator.Pitch);
-	Turret->Elevate(DeltaRotator.Yaw);
+	if(DeltaRotator.Yaw > 180)
+		Turret->Elevate(-DeltaRotator.Yaw);
+	else
+		Turret->Elevate(DeltaRotator.Yaw);
 }
 
 void UTankAimingComponent::Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
