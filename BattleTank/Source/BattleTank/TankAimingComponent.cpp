@@ -32,7 +32,6 @@ void UTankAimingComponent::BeginPlay()
 
 int32 UTankAimingComponent::GetRemainAmmos() 
 {
-	UE_LOG(LogTemp, Warning, TEXT("%d"), Ammos);
 	return Ammos;
 }
 
@@ -121,7 +120,7 @@ void UTankAimingComponent::Fire()
 		, Barrel->GetSocketRotation(FName("Projectile"))
 		, FActorSpawnParameters()
 		);
-	Projectile->LaunchProjectile(4000);
+	Projectile->LaunchProjectile(LaunchSpeed);
 	LastFireTime = FPlatformTime::Seconds();
 	Ammos--;
 
