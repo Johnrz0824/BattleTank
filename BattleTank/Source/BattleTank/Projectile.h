@@ -19,8 +19,12 @@ public:
 	AProjectile();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	void DestroyOnExpire();
+
+	UPROPERTY(EditDefaultsOnly)
+	float DestroyDelay = 10.f;
+	// Called when the game starts or when spawned
 	UProjectileMovementComponent* MovementComponent = nullptr;
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* CollisionMesh = nullptr;
@@ -38,7 +42,6 @@ public:
 public:
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
-
 	
 	
 };

@@ -3,6 +3,7 @@
 #include "Projectile.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Engine/StaticMesh.h"
+#include "Engine/World.h"
 #include "PhysicsEngine/RadialForceComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
@@ -19,18 +20,17 @@ AProjectile::AProjectile()
 	CollisionMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("Collision Mesh"));
 	SetRootComponent(CollisionMesh);
 	CollisionMesh->SetNotifyRigidBodyCollision(true);
-	CollisionMesh->SetVisibility(false);
 	
 	LaunchBlast = CreateDefaultSubobject<UParticleSystemComponent>(FName("Launch Blast"));
 	LaunchBlast->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
 	ImpactBlast = CreateDefaultSubobject<UParticleSystemComponent>(FName("Impact Blast"));
-	LaunchBlast->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	ImpactBlast->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	ImpactBlast->bAutoActivate = false;
 
 	ExplosionForce = CreateDefaultSubobject<URadialForceComponent>(FName("Explosion Force"));
 	ExplosionForce->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-	ExplosionForce->bIgnoreOwningActor = true;
+	//ExplosionForce->bIgnoreOwningActor = true;
 }
 
 // Called when the game starts or when spawned
@@ -58,4 +58,16 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 	LaunchBlast->Deactivate();
 	ImpactBlast->Activate();
 	ExplosionForce->FireImpulse();
+	
+	SetRootComponent(ImpactBlast);
+	CollisionMesh->DestroyComponent();
+
+	FTimerHandle handle;
+	UWorld* World = GetWorld();
+	World->GetTimerManager().SetTimer(handle, this, &AProjectile::DestroyOnExpire, DestroyDelay,false);
+}
+
+void AProjectile::DestroyOnExpire()
+{
+	this->Destroy();
 }
