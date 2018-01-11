@@ -22,4 +22,7 @@ protected:
 	float MaxHealth = 100;
 	UPROPERTY(VisibleAnywhere, Category = "Setup")
 	float CurrentHealth = 100;
+
+private:
+	void BeginPlay()override;
 };

@@ -12,9 +12,7 @@ float ATank::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEve
 {
 	int32 DamagePoints = FPlatformMath::RoundToInt(DamageAmount);
 	float DamageToApply = FMath::Clamp<int32>(DamagePoints, 0, CurrentHealth);
-	UE_LOG(LogTemp, Warning, TEXT("%f"), CurrentHealth);
 	CurrentHealth -= DamageToApply;
-	UE_LOG(LogTemp, Warning, TEXT("%f"), CurrentHealth);
 	if(CurrentHealth<=0)
 		OnDeath.Broadcast();
 	return DamageToApply;
@@ -23,4 +21,10 @@ float ATank::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEve
 float ATank::GetHealthPercent() 
 {
 	return CurrentHealth / MaxHealth;
+}
+
+void ATank::BeginPlay()
+{
+	Super::BeginPlay();
+	CurrentHealth = MaxHealth;
 }

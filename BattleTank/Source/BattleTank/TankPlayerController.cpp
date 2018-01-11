@@ -3,17 +3,22 @@
 #include "TankPlayerController.h"
 #include "Engine/World.h"
 #include "TankAimingComponent.h"
+#include "Tank.h"
 #include "BattleTank.h"
 
 #define OUT
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+	auto Pawn = GetPawn();
+	if (!ensure(Pawn)) { return; }
+	auto AimingComponent = Pawn->FindComponentByClass<UTankAimingComponent>();
 	if (ensure(AimingComponent))
 		FoundAimingComponent(AimingComponent);
 	else
 		UE_LOG(LogTemp, Warning, TEXT("No Aiming Component"));
+	auto Tank = Cast<ATank>(Pawn);
+	Tank->OnDeath.AddUniqueDynamic(this, &ATankPlayerController::OnTankDeath);
 }
 
 void ATankPlayerController::Tick(float DeltaTime)
@@ -73,6 +78,11 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
 		);
 	HitLocation = hit.Location;
 	return bGet;
+}
+
+void ATankPlayerController::OnTankDeath()
+{
+	StartSpectatingOnly();
 }
 
 

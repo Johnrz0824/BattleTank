@@ -26,4 +26,7 @@ private:
 	float CrosshairXLocation = 0.5f;
 	UPROPERTY(EditAnywhere)
 	float CrosshairYLocation = 0.3333f;
+
+	UFUNCTION()
+	void OnTankDeath();
 };
